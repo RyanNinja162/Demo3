@@ -9,8 +9,6 @@ const initialState = {
 
 const catReducer = (state = initialState, action) => {
 
-    console.log("actions", action)
-
     switch (action.type) {
         case DELETE_CAT:
             return {
@@ -40,8 +38,6 @@ const catReducer = (state = initialState, action) => {
                 showToaster: !state.showToaster
             };
         case 'UPDATE_CAT':
-            console.log("updtae api call", action.payload)
-
             const { id } = action.payload;
             const newState = state.cats.map(obj => {
                 // 👇️ if id equals 2, update country property

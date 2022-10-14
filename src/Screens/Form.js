@@ -29,9 +29,7 @@ const AddForm = (props) => {
     const handleFormSubmit = (values, resetForm) => {
         const { name, description, breed } = values;
         if (selectedId) {
-            console.log("inside if ")
             const data = { id: selectedId, name: name, description: description, breed: breed }
-            console.log(updateCat(data))
             dispatch(updateCat(data));
             dispatch(setToasterMessage("Cat Edited Successfully"));
         } else {

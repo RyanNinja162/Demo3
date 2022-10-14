@@ -13,9 +13,6 @@ const Home = (props) => {
     const { setShowForm, setSelectedId, setFormData } = props;
 
     const { cats, showToaster, toasterBackgroundColor, toasterMessage } = useSelector(s => s.catsList);
-    const state = useSelector(s => s);
-
-    console.log("state", state);
 
     useEffect(() => {
         if (showToaster) {
