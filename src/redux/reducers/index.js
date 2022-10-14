@@ -55,4 +55,5 @@ const catReducer = (state = initialState, action) => {
             return state;
     }
 }
+
 export default catReducer;
