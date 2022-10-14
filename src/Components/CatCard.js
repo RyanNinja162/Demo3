@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { deleteCat } from "../redux/actions";
+import { deleteCat, toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
 import { useDispatch } from "react-redux";
-
 
 const SinglePair = ({ first, second }) => {
     return (
@@ -25,6 +24,9 @@ const CatCard = (props) => {
 
     const DeleteCat = () => {
         dispatch(deleteCat(id));
+        dispatch(setToasterBackgroundColor("red"))
+        dispatch(setToasterMessage("Cat Deleted"))
+        dispatch(toggleToaster());
     }
 
     const EditCat = () => {
@@ -68,10 +70,17 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         borderRadius: 20,
         shadowColor: '#52006A',
-        elevation: 20,
         backgroundColor: "#fff",
         padding: 10,
         position: "relative",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.51,
+        shadowRadius: 13.16,
+        elevation: 20,
     },
     deleteButton: {
         position: "absolute",

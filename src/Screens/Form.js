@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, TextInput, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Button, TextInput, View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { addCat, updateCat } from "../redux/actions";
+import { toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
 
 const SignupSchema = Yup.object().shape({
     name: Yup.string()
@@ -23,11 +24,7 @@ const AddForm = (props) => {
 
     const { selectedId, setSelectedId, setShowForm, formData } = props;
 
-    console.log("form data in form ", formData)
-
     const { cats } = useSelector(s => s.catsList);
-
-    console.log("cats[0]", cats[0])
 
     const handleFormSubmit = (values, resetForm) => {
         const { name, description, breed } = values;
@@ -36,13 +33,17 @@ const AddForm = (props) => {
             const data = { id: selectedId, name: name, description: description, breed: breed }
             console.log(updateCat(data))
             dispatch(updateCat(data));
+            dispatch(setToasterMessage("Cat Edited Successfully"));
         } else {
             const data = { id: cats.length, name: name, description: description, breed: breed }
             dispatch(addCat(data));
+            dispatch(setToasterMessage("Cat added Successfully"));
         }
         setSelectedId(0)
         setShowForm(false)
         resetForm({ name: "", breed: "", description: "" })
+        dispatch(setToasterBackgroundColor("green"));
+        dispatch(toggleToaster());
     }
 
     const handleCancel = () => {
@@ -50,13 +51,14 @@ const AddForm = (props) => {
     }
 
     return (
-        <View>
+        <SafeAreaView>
             <Text style={styles.heading}>Add a New Cat</Text>
             <Formik
                 initialValues={formData}
                 onSubmit={(values, { resetForm }) => handleFormSubmit(values, resetForm)}
                 validationSchema={SignupSchema}
                 validateOnChange={false}
+                validateOnBlur={false}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                     <View>
@@ -100,20 +102,11 @@ const AddForm = (props) => {
                             <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: "blue", borderWidth: 1, flexGrow: 1, alignItems: "center", paddingVertical: 6, borderRadius: 10 }}>
                                 <Text style={{ color: "#fff" }}>Submit</Text>
                             </TouchableOpacity>
-                            {/* <View style={{ flexGrow: 1 }}>
-                                <Button onPress={handleCancel} title="Cancel" />
-                            </View>
-                            <View style={{ flexGrow: 1 }}>
-                                <Button onPress={handleCancel} title="Cancel" />
-                            </View> */}
                         </View>
-                        {/* <View style={styles.button}>
-                            <Button onPress={handleSubmit} title="Submit" />
-                        </View> */}
                     </View>
                 )}
             </Formik>
-        </View>
+        </SafeAreaView>
     )
 }
 

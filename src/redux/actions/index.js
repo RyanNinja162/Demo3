@@ -14,3 +14,17 @@ export const updateCat = (data) => ({
     type: 'UPDATE_CAT',
     payload: data
 })
+
+export const toggleToaster = () => ({
+    type: 'TOGGLE_TOASTER',
+})
+
+export const setToasterBackgroundColor = (data) => ({
+    type: 'TOASTER_BACK_COLOR',
+    payload: data
+})
+
+export const setToasterMessage = (data) => ({
+    type: 'TOASTER_MESSAGE',
+    payload: data
+})

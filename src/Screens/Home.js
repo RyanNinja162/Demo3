@@ -1,16 +1,29 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, SafeAreaView } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import CatCard from "../Components/CatCard";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
-const data = [1, 2, 3, 4, 5, 6, 7, 8]
+import ListEmpty from "../Components/ListEmpty";
+import { toggleToaster } from "../redux/actions";
 
 const Home = (props) => {
 
+    const dispatch = useDispatch()
+
     const { setShowForm, setSelectedId, setFormData } = props;
 
-    const { cats } = useSelector(s => s.catsList);
+    const { cats, showToaster, toasterBackgroundColor, toasterMessage } = useSelector(s => s.catsList);
+    const state = useSelector(s => s);
+
+    console.log("state", state);
+
+    useEffect(() => {
+        if (showToaster) {
+            setTimeout(() => {
+                dispatch(toggleToaster())
+            }, 3000)
+        }
+    }, [showToaster])
 
     const renderItem = ({ item }) => (
         <CatCard data={item} setSelectedId={setSelectedId} setShowForm={setShowForm} setFormData={setFormData} />
@@ -19,20 +32,25 @@ const Home = (props) => {
     const handleAdd = () => {
         setShowForm(true);
         setSelectedId(0);
-        setFormData({ name: null, breed: null, description: null });
+        setFormData({ name: "", breed: "", description: "" });
     }
 
     return (
-        <View style={{ flex: 1, position: "relative" }}>
+        <SafeAreaView style={{ flex: 1 }}>
+            {cats.length ? <Text style={styles.heading}>Have a look at your cats </Text> : null}
             <FlatList
                 data={cats}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
+                contentContainerStyle={{ flexGrow: 1 }}
+                ListEmptyComponent={() => <ListEmpty />}
             />
             <TouchableOpacity onPress={handleAdd} style={styles.addIcon}>
                 <Ionicons name="add" color="#000" size={30} />
             </TouchableOpacity>
-        </View>
+            {showToaster && <View style={[styles.toaster, { backgroundColor: toasterBackgroundColor }]}>
+                <Text style={[styles.toasterTest, { color: "#fff" }]}>{toasterMessage}</Text></View>}
+        </SafeAreaView>
     )
 }
 
@@ -44,10 +62,37 @@ const styles = StyleSheet.create({
         zIndex: 10,
         padding: 6,
         shadowColor: '#52006A',
-        elevation: 20,
         backgroundColor: "#fff",
-        borderRadius: 100
+        borderRadius: 100,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.51,
+        shadowRadius: 13.16,
+        elevation: 20,
     },
+    heading: {
+        fontSize: 20,
+        marginVertical: 14,
+        marginLeft: 22,
+        fontWeight: "bold",
+        color: "#000"
+    },
+    toaster: {
+        position: "absolute",
+        bottom: 20,
+        right: 10,
+        left: 10,
+        zIndex: 15,
+        padding: 10,
+        alignItems: "center",
+        borderRadius: 10
+    },
+    toasterTest: {
+        fontSize: 18
+    }
 });
 
 export default Home;
