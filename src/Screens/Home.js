@@ -14,6 +14,7 @@ const Home = (props) => {
 
     const { cats, showToaster, toasterBackgroundColor, toasterMessage } = useSelector(s => s.catsList);
 
+    // UseEffect to handle toaster hide after every 3 sec of display
     useEffect(() => {
         if (showToaster) {
             setTimeout(() => {
@@ -22,10 +23,12 @@ const Home = (props) => {
         }
     }, [showToaster])
 
+    // FlatList item component
     const renderItem = ({ item }) => (
         <CatCard data={item} setSelectedId={setSelectedId} setShowForm={setShowForm} setFormData={setFormData} />
     );
 
+    // Function call when we press the floating Add button
     const handleAdd = () => {
         setShowForm(true);
         setSelectedId(0);
@@ -35,6 +38,7 @@ const Home = (props) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {cats.length ? <Text style={styles.heading}>Have a look at your cats </Text> : null}
+            {/* List of all the available cats */}
             <FlatList
                 data={cats}
                 renderItem={renderItem}

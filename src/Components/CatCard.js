@@ -6,6 +6,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { deleteCat, toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
 import { useDispatch } from "react-redux";
 
+// Component for single key value pair display in single cat card.
 const SinglePair = ({ first, second }) => {
     return (
         <View style={styles.singlePairContainer}>
@@ -15,6 +16,7 @@ const SinglePair = ({ first, second }) => {
     )
 }
 
+// Single card of the FlatList
 const CatCard = (props) => {
     const dispatch = useDispatch()
 
@@ -22,6 +24,7 @@ const CatCard = (props) => {
 
     const { id, name, breed, description } = data;
 
+    // Function call on trying to delete a Cat
     const DeleteCat = () => {
         dispatch(deleteCat(id));
         dispatch(setToasterBackgroundColor("red"))
@@ -29,6 +32,7 @@ const CatCard = (props) => {
         dispatch(toggleToaster());
     }
 
+    // function call on pressing edit on any cat
     const EditCat = () => {
         setSelectedId(id);
         setShowForm(true);
