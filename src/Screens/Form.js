@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import { addCat, updateCat } from "../redux/actions";
 import { toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
 
+
+// Validations for Form
 const SignupSchema = Yup.object().shape({
     name: Yup.string()
         .min(2, 'Too Short!')
@@ -26,8 +28,11 @@ const AddForm = (props) => {
 
     const { cats } = useSelector(s => s.catsList);
 
+    // Function call on form submit after validating the fields
     const handleFormSubmit = (values, resetForm) => {
         const { name, description, breed } = values;
+
+        // Based on id decides whether to edit or add to make the same form  reusable
         if (selectedId) {
             const data = { id: selectedId, name: name, description: description, breed: breed }
             dispatch(updateCat(data));
@@ -44,6 +49,7 @@ const AddForm = (props) => {
         dispatch(toggleToaster());
     }
 
+    // function when form edit or add is canceled
     const handleCancel = () => {
         setShowForm(false);
     }
@@ -51,6 +57,7 @@ const AddForm = (props) => {
     return (
         <SafeAreaView>
             <Text style={styles.heading}>Add a New Cat</Text>
+            {/* Formik for Form handling */}
             <Formik
                 initialValues={formData}
                 onSubmit={(values, { resetForm }) => handleFormSubmit(values, resetForm)}
@@ -98,7 +105,7 @@ const AddForm = (props) => {
                                 <Text>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: "blue", borderWidth: 1, flexGrow: 1, alignItems: "center", paddingVertical: 6, borderRadius: 10 }}>
-                                <Text style={{ color: "#fff" }}>Submit</Text>
+                                <Text style={{ color: "#fff" }}>{selectedId ? "Save" : "Add"}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

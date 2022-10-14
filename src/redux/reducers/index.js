@@ -8,7 +8,6 @@ const initialState = {
 };
 
 const catReducer = (state = initialState, action) => {
-
     switch (action.type) {
         case DELETE_CAT:
             return {
