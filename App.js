@@ -6,7 +6,8 @@ import Home from './src/Screens/Home'
 import Form from "./src/Screens/Form"
 import Navigation from './src/navigation'
 import { PersistGate } from 'redux-persist/integration/react'
-import { store, persistor } from './src/redux/index';
+// import { store, persistor } from './src/redux/index';
+import store from './src/redux/index';
 import Tts from 'react-native-tts';
 
 const App = () => {
@@ -16,9 +17,9 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-        {showForm ? <Form formData={formData} selectedId={selectedId} setSelectedId={setSelectedId} setShowForm={setShowForm} /> : <Home setShowForm={setShowForm} setSelectedId={setSelectedId} setFormData={setFormData} />}
-      </PersistGate>
+      {/* <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}> */}
+      {showForm ? <Form formData={formData} selectedId={selectedId} setSelectedId={setSelectedId} setShowForm={setShowForm} /> : <Home setShowForm={setShowForm} setSelectedId={setSelectedId} setFormData={setFormData} />}
+      {/* </PersistGate> */}
     </Provider>
   )
 }

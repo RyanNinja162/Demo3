@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { deleteCat, toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
+// import { deleteCat, toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
+import { deleteCat, toasterBackColor, toasterMessage, toggleToaster } from "../redux/counter";
 import { useDispatch } from "react-redux";
 
 // Component for single key value pair display in single cat card.
@@ -27,8 +28,8 @@ const CatCard = (props) => {
     // Function call on trying to delete a Cat
     const DeleteCat = () => {
         dispatch(deleteCat(id));
-        dispatch(setToasterBackgroundColor("red"))
-        dispatch(setToasterMessage("Cat Deleted"))
+        dispatch(toasterBackColor("red"))
+        dispatch(toasterMessage("Cat Deleted"))
         dispatch(toggleToaster());
     }
 

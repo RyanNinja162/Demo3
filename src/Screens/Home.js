@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import CatCard from "../Components/CatCard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ListEmpty from "../Components/ListEmpty";
-import { toggleToaster } from "../redux/actions";
+// import { toggleToaster } from "../redux/actions";
+import { toggleToaster } from "../redux/counter";
 
 const Home = (props) => {
-
     const dispatch = useDispatch()
 
     const { setShowForm, setSelectedId, setFormData } = props;

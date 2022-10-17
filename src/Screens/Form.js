@@ -3,9 +3,9 @@ import { Button, TextInput, View, Text, StyleSheet, TouchableOpacity, SafeAreaVi
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { addCat, updateCat } from "../redux/actions";
-import { toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
-
+// import { addCat, updateCat } from "../redux/actions";
+import { updateCat, addCat, toasterBackColor, toggleToaster, toasterMessage } from "../redux/counter";
+// import { toggleToaster, setToasterBackgroundColor, setToasterMessage } from "../redux/actions";
 
 // Validations for Form
 const SignupSchema = Yup.object().shape({
@@ -36,16 +36,16 @@ const AddForm = (props) => {
         if (selectedId) {
             const data = { id: selectedId, name: name, description: description, breed: breed }
             dispatch(updateCat(data));
-            dispatch(setToasterMessage("Cat Edited Successfully"));
+            dispatch(toasterMessage("Cat Edited Successfully"));
         } else {
             const data = { id: cats.length, name: name, description: description, breed: breed }
             dispatch(addCat(data));
-            dispatch(setToasterMessage("Cat added Successfully"));
+            dispatch(toasterMessage("Cat added Successfully"));
         }
         setSelectedId(0)
         setShowForm(false)
         resetForm({ name: "", breed: "", description: "" })
-        dispatch(setToasterBackgroundColor("green"));
+        dispatch(toasterBackColor("green"));
         dispatch(toggleToaster());
     }
 
