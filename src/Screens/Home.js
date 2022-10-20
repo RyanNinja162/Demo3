@@ -8,7 +8,9 @@ import ListEmpty from "../Components/ListEmpty";
 import { toggleToaster } from "../redux/counter";
 import * as ImagePicker from "expo-image-picker";
 import * as Permission from "expo-permissions";
-import { launchCamera } from "react-native-image-picker"
+import { launchCamera, showImagePicker, launchImageLibrary } from "react-native-image-picker";
+import CompressImage from 'react-native-compress-image';
+import { Image } from 'react-native-compressor';
 
 const Home = (props) => {
     const dispatch = useDispatch()
@@ -17,10 +19,23 @@ const Home = (props) => {
 
     const { cats, showToaster, toasterBackgroundColor, toasterMessage } = useSelector(s => s.catsList);
 
+    // let options = {
+    //     // saveToPhotos: true,
+    //     mediaType: "photo"
+    // }
+
     let options = {
-        // saveToPhotos: true,
-        mediaType: "photo"
-    }
+        title: 'Select Image',
+        mediaType: "photo",
+        quality: 0.5,
+        customButtons: [
+            { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
+        ],
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
 
     // UseEffect to handle toaster hide after every 3 sec of display
     useEffect(() => {
@@ -87,13 +102,40 @@ const Home = (props) => {
             console.log("results", result)
 
             const uri = result.assets[0].uri
-            let newFile = { uri: uri, type: `test/jpg`, name: uri.split("/").pop() }
+
+            console.log("uri", uri)
+            let newFile = { uri: uri, type: result.assets[0].type, name: uri.split("/").pop() }
 
             console.log("newFile", newFile)
+            console.log("uri", uri)
+
+            // const result2 = await Image.compress(`${uri}`, {
+            //     compressionMethod: 'auto',
+            // });
+
+            // console.log("result2", result2)
 
             handleUpload(newFile)
             // console.log("inside if", result)
         }
+    }
+
+    const pickFromGallery = () => {
+        launchImageLibrary(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                alert(response.customButton);
+            } else {
+                const source = { uri: response.uri };
+                console.log('response', JSON.stringify(response));
+            }
+        });
     }
 
     const handleUpload = (image) => {
@@ -126,6 +168,7 @@ const Home = (props) => {
             {/* <TouchableOpacity onPress={handleAdd} style={styles.addIcon}> */}
             {/* <TouchableOpacity onPress={pickFromCamera} style={styles.addIcon}> */}
             <TouchableOpacity onPress={openCamera} style={styles.addIcon}>
+                {/* <TouchableOpacity onPress={pickFromGallery} style={styles.addIcon}> */}
                 <Ionicons name="add" color="#000" size={30} />
             </TouchableOpacity>
             {showToaster && <View style={[styles.toaster, { backgroundColor: toasterBackgroundColor }]}>
